@@ -1,9 +1,11 @@
 const express = require("express");
 const profileRouter = express.Router();
+const request = require("request");
 const ProfileModel = require("./models/profileSchema");
 const UserModel = require("./models/userSchema");
 const auth = require("../../routes/api/middleware/auth");
 const postRouter = require("./posts");
+const { body } = require("express-validator");
 //const UsersModel = require("./models/userSchema");
 
 // @route GET api/profile/me
@@ -196,55 +198,84 @@ profileRouter.delete("/experience/:exp_id", auth, async (req, res, next) => {
   }
 });
 
-
-
 //@route   PUT api/profile/education
 // @desc add profile education
 // @access  private
 
 profileRouter.put("/education", auth, async (req, res, next) => {
-    const { school, degree, fieldOfStudy, from, to, current, description } = req.body;
-  
-    const newEdu = {
-      school,
-      degree,
-      fieldOfStudy,
-      from,
-      to,
-      current,
-      description,
+  const {
+    school,
+    degree,
+    fieldOfStudy,
+    from,
+    to,
+    current,
+    description,
+  } = req.body;
+
+  const newEdu = {
+    school,
+    degree,
+    fieldOfStudy,
+    from,
+    to,
+    current,
+    description,
+  };
+  try {
+    const profile = await ProfileModel.findOne({ user: req.user.id });
+
+    // experience is a key in the profile model. we use unshift instead of push because we want to add the experience in the beginning of the array.
+    profile.education.unshift(newEdu);
+    await profile.save();
+    res.json(profile);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//@route   PUT api/profile/education/:edu_id
+// @desc delete education from profile
+// @access  private
+
+profileRouter.delete("/education/:edu_id", auth, async (req, res, next) => {
+  try {
+    const profile = await ProfileModel.findOne({ user: req.user.id });
+
+    //Get remove index
+    const removeIndex = profile.education
+      .map((item) => item.id)
+      .indexOf(req.params.edu_id);
+
+    profile.education.splice(removeIndex, 1);
+    await profile.save();
+    res.json(profile);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//@route   GET api/profile/github/:username
+// @desc Get profiles from github
+// @access  public
+
+profileRouter.get("/github/:username", (req, res, next) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${process.env.client_id}&client_secret=${process.env.github_secret}`,
+      method: "GET",
+      headers: { "user-agent": "node.js" },
     };
-    try {
-      const profile = await ProfileModel.findOne({ user: req.user.id });
-  
-      // experience is a key in the profile model. we use unshift instead of push because we want to add the experience in the beginning of the array.
-      profile.education.unshift(newEdu);
-      await profile.save();
-      res.json(profile);
-    } catch (error) {
-      next(error);
-    }
-  });
-  
-  //@route   PUT api/profile/education/:edu_id
-  // @desc delete education from profile
-  // @access  private
-  
-  profileRouter.delete("/education/:edu_id", auth, async (req, res, next) => {
-    try {
-      const profile = await ProfileModel.findOne({ user: req.user.id });
-  
-      //Get remove index
-      const removeIndex = profile.education
-        .map((item) => item.id)
-        .indexOf(req.params.edu_id);
-  
-      profile.education.splice(removeIndex, 1);
-      await profile.save();
-      res.json(profile);
-    } catch (error) {
-      next(error);
-    }
-  });
-  
+    request(options, (error, response, body) => {
+      if (error) console.error(error);
+      if (response.statusCode !== 200) {
+       return res.status(404).json({ msg: "No github profile found" });
+      }
+      res.json(JSON.parse(body));
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = profileRouter;
