@@ -3,6 +3,7 @@ const userRouter = express.Router();
 const gravatar = require ("gravatar")
 const bcrypt = require ("bcryptjs")
 const jwt = require("jsonwebtoken")
+const basicAuth = require("../api/middleware/auth")
 const UserModel = require("./models/userSchema");
 
 
@@ -61,6 +62,25 @@ userRouter.post("/", async(req,res, next)=> {
     }catch(error){
         next(error)
     }
+})
+
+userRouter.get("/me", basicAuth, async(req,res,next)=>{
+    try{
+        const user = await UserModel.findById(req.user.id).select ('-password')
+        if(user){
+        res.json(user);
+
+        }else{
+            const error = new Error("user not found")
+            error.httpStatusCode =404
+            next(error)
+
+        }
+
+    }catch(error){
+        next(error)
+    }
+
 })
 
 
