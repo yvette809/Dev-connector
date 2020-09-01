@@ -1,10 +1,7 @@
 import React, { useState,useEffect } from "react";
-import {connect} from 'react-redux'
-import{Link} from 'react-router-dom'
-//import {setAlert} from '../../actions/alert'
+import axios from 'axios';
 
-
-const Register = (props) => {
+const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,20 +15,41 @@ const Register = (props) => {
   //     setFormData({...formData, [e.currentTarget.value]:e.currentTarget.value})
   // }
 
-  const onSubmit =  e => {
+  const onSubmit = async e => {
     e.preventDefault();
-    if(password !== password2){
-      console.log('passwords do not match')
-    }else{
-      console.log('success')
+    if (password !== password2) {
+      console.log("passwords do not match");
+    } else {
+      const newUser ={
+          name,
+          email,
+          password
+      }
+
+      try{
+        const config={
+            headers:{
+                'Content-Type':'application/json'
+            }
+        }
+        const body = JSON.stringify(newUser)
+        const res = await axios.post('/api/users', body, config)
+        console.log(res.data)
+
+    }catch(error){
+        console.log(error)
     }
-  
-   
-    // props.setAlert("passwords do not match", 'danger');
-   
     }
 
    
+  }
+
+//   useEffect(()=>{
+//       onSubmit()
+//   },[])
+
+
+
   return (
     <>
       <h1 className="large text-primary">Sign Up</h1>
@@ -82,14 +100,13 @@ const Register = (props) => {
             minLength="6"
           />
         </div>
-        <input type="submit" className="btn btn-primary" value="Register" />
+        <input type="submit" className="btn btn-primary" value="Register" onClick={onSubmit}/>
       </form>
       <p className="my-1">
-        Already have an account? <Link to="/login"> Sign In </Link>
+        Already have an account? <a href="login.html">Sign In</a>
       </p>
     </>
   );
 };
 
-// export default connect(null, {setAlert}) (Register);
-export default Register
+export default Register;

@@ -6,6 +6,7 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import './App.css';
 
+
 function App() {
   return (
     <Router>
@@ -15,12 +16,10 @@ function App() {
       <Switch>
       <Route path ='/register' exact><Register/></Route>
       <Route path ='/login' exact><Login/></Route>
-
-      </Switch>
-
+     </Switch>
     </section>
-   
-    </Router>
+   </Router>
+  
   );
 }
 
