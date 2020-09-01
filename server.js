@@ -27,7 +27,7 @@ const {
  server.use("/api/users", userRouter)
  server.use("/api/auth", authRouter)
  server.use("/api/profile", profileRouter)
- server.use("/api/post", postRouter)
+ server.use("/api/posts", postRouter)
 
  server.use(badRequestHandler)
 server.use(forbiddenHandler)

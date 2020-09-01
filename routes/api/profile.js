@@ -4,9 +4,9 @@ const request = require("request");
 const ProfileModel = require("./models/profileSchema");
 const UserModel = require("./models/userSchema");
 const auth = require("../../routes/api/middleware/auth");
-const postRouter = require("./posts");
-const { body } = require("express-validator");
-//const UsersModel = require("./models/userSchema");
+// const postRouter = require("./posts");
+// const { body } = require("express-validator");
+
 
 // @route GET api/profile/me
 // @desc get current users profile
