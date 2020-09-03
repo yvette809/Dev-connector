@@ -1,42 +1,41 @@
-import React, { useState,useEffect } from "react";
-import {connect} from 'react-redux'
-import{Link} from 'react-router-dom'
-//import {setAlert} from '../../actions/alert'
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, Redirect } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
 
 
-const Register = (props) => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
+    name: '',
+    email: '',
+    password: '',
+    password2: ''
   });
 
   const { name, email, password, password2 } = formData;
 
-  // const onChange = e =>{
-  //     setFormData({...formData, [e.currentTarget.value]:e.currentTarget.value})
-  // }
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit =  e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if(password !== password2){
-      console.log('passwords do not match')
-    }else{
-      console.log('success')
+    if (password !== password2) {
+      setAlert('Passwords do not match', 'danger');
+    } else {
+      register({ name, email, password });
     }
-  
-   
-    // props.setAlert("passwords do not match", 'danger');
-   
-    }
+  };
 
-   
+  if (isAuthenticated) {
+    //return <Redirect to="/dashboard" />;
+  }
+
   return (
     <>
       <h1 className="large text-primary">Sign Up</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> Create Your Account
+        <i className="fas fa-user" /> Create Your Account
       </p>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
@@ -45,8 +44,7 @@ const Register = (props) => {
             placeholder="Name"
             name="name"
             value={name}
-            onChange={(e) => setFormData(e.currentTarget.value)}
-            required
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
@@ -55,7 +53,7 @@ const Register = (props) => {
             placeholder="Email Address"
             name="email"
             value={email}
-            onChange={(e) => setFormData(e.currentTarget.value)}
+            onChange={onChange}
           />
           <small className="form-text">
             This site uses Gravatar so if you want a profile image, use a
@@ -68,28 +66,30 @@ const Register = (props) => {
             placeholder="Password"
             name="password"
             value={password}
-            onChange={(e) => setFormData(e.currentTarget.value)}
-            minLength="6"
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
           <input
             type="password"
-            value={password2}
-            onChange={(e) => setFormData(e.currentTarget.value)}
             placeholder="Confirm Password"
             name="password2"
-            minLength="6"
+            value={password2}
+            onChange={onChange}
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <Link to="/login"> Sign In </Link>
+        Already have an account? <Link to="/login">Sign In</Link>
       </p>
     </>
   );
 };
 
-// export default connect(null, {setAlert}) (Register);
-export default Register
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { setAlert, register })(Register);

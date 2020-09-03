@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Alert from './components/layout/Alert';
 import './App.css';
 
 
@@ -13,6 +14,7 @@ function App() {
     <Navbar/>
     <Route path ='/' exact><Landing/></Route>
     <section className= "container">
+      <Alert/>
       <Switch>
       <Route path ='/register' exact><Register/></Route>
       <Route path ='/login' exact><Login/></Route>
