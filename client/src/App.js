@@ -9,6 +9,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/privateRoute";
 import "./App.css";
 import { loadUser } from "./actions/auth";
+import CreateProfile from "./components/profile-form/CreateProfile"
 import configureStore from "./store";
 import setauthToken from "./utils/setAuthToken";
 
@@ -39,6 +40,9 @@ function App() {
           </Route>
           <PrivateRoute path="/dashboard" exact>
             <Dashboard />
+          </PrivateRoute>
+          <PrivateRoute path="/create-profile" exact>
+            <CreateProfile />
           </PrivateRoute>
         </Switch>
       </section>
