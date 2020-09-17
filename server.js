@@ -6,8 +6,6 @@ const profileRouter = require("./routes/api/profile");
 const postRouter = require("./routes/api/posts");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const passport = require("passport");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const {
@@ -16,17 +14,13 @@ const {
   notFoundHandler,
   genericErrorHandler,
 } = require("./routes/errorHandler");
-const { initialize } = require("passport");
 
 dotenv.config();
 
 const server = express();
 console.log(listEndpoints(server));
 server.use(express.json());
-server.use(cookieParser());
 server.use(cors());
-
-server.use(passport, initialize);
 
 server.use("/api/users", userRouter);
 server.use("/api/auth", authRouter);

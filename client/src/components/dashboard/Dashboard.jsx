@@ -1,18 +1,42 @@
-import React, {useEffect} from "react";
-import {connect} from "react-redux"
-import {getCurrentProfile} from '../../actions/profile'
+import React, { useEffect } from "react";
+import{Link} from 'react-router-dom';
+import { connect } from "react-redux";
+import Spinner from "../layout/Spinner";
+import { getCurrentProfile } from "../../actions/profile";
 
-const Dashboard = ({getCurrentProfile,auth,profile}) => {
-
-  useEffect(()=>{
+const Dashboard = ({
+  getCurrentProfile,
+  auth: { user },
+  profile: { profile, loading },
+}) => {
+  useEffect(() => {
     getCurrentProfile();
-  },[])
-  return <div>Dashboard</div>;
+  }, []);
+  return loading && profile === null ? (
+    <Spinner />
+  ) : (
+    <>
+      <h1 className="large text-primary">Dashboard</h1>
+      <p className="lead">
+        <i className="fas fa-user"></i>Welcome {user && user.name}
+      </p>
+      {profile !== null ? (
+        <>Has</>
+      ) : (
+        <>
+          <p>You have not yet setup a profile. Please add some info</p>
+          <Link to="/create-profile" className= "btn btn-primary my-1">
+            Create profile
+          </Link>
+        </>
+      )}
+    </>
+  );
 };
 
-const mapStateToProps = state=> ({
+const mapStateToProps = (state) => ({
   auth: state.auth,
-  profile: state.profile
-})
+  profile: state.profile,
+});
 
-export default connect (mapStateToProps, {getCurrentProfile})(Dashboard);
+export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);

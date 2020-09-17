@@ -1,7 +1,5 @@
 const express = require("express");
 const userRouter = express.Router();
-const passport = require("passport");
-const { authenticate, refreshToken } = require("./authTools");
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -80,30 +78,5 @@ userRouter.get("/me", basicAuth, async (req, res, next) => {
   }
 });
 
-// google login
-userRouter.get("/googleLogin", passport.authenticate("google", {
-  scope: ["profile", "email"],
-}));
 
-userRouter.get(
-  "/googleRedirect",
-  passport.authenticate("google"),
-  async (req, res, next) => {
-    try {
-      console.log(req.user);
-      const { token, refreshToken } = req.user.tokens;
-      res.cookie("accessToken", token, {
-        httpOnly: true,
-      });
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        path: "users/refreshToken",
-      });
-      res.status(200).redirect("http://localhost:4040/");
-    } catch (error) {
-      console.log(error);
-      next(error);
-    }
-  }
-);
 module.exports = userRouter;

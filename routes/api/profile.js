@@ -225,7 +225,7 @@ profileRouter.put("/education", auth, async (req, res, next) => {
   try {
     const profile = await ProfileModel.findOne({ user: req.user.id });
 
-    // experience is a key in the profile model. we use unshift instead of push because we want to add the experience in the beginning of the array.
+    // education is a key in the profile model. we use unshift instead of push because we want to add the experience in the beginning of the array.
     profile.education.unshift(newEdu);
     await profile.save();
     res.json(profile);
