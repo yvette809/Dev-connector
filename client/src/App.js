@@ -13,6 +13,7 @@ import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
 import AddExperience from "./components/profile-forms/AddExperience";
 import AddEducation from "./components/profile-forms/AddEducation";
+import Profiles from "./components/profiles/Profiles";
 import configureStore from "./store";
 import setauthToken from "./utils/setAuthToken";
 
@@ -41,6 +42,9 @@ function App() {
           <Route path="/login" exact>
             <Login />
           </Route>
+          <Route path="/profiles" exact>
+            <Profiles />
+          </Route>
           <PrivateRoute path="/dashboard" exact>
             <Dashboard />
           </PrivateRoute>
@@ -54,7 +58,7 @@ function App() {
             <AddExperience />
           </PrivateRoute>
           <PrivateRoute path="/add-education" exact>
-            <AddEducation/>
+            <AddEducation />
           </PrivateRoute>
         </Switch>
       </section>

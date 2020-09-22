@@ -3,6 +3,7 @@ const profileRouter = express.Router();
 const request = require("request");
 const ProfileModel = require("./models/profileSchema");
 const UserModel = require("./models/userSchema");
+const PostModel = require("./models/postSchema");
 const auth = require("../../routes/api/middleware/auth");
 // const postRouter = require("./posts");
 // const { body } = require("express-validator");
@@ -281,9 +282,16 @@ profileRouter.get("/github/:username", (req, res, next) => {
 profileRouter.delete("/", auth, async(req,res)=>{
   try{
     //remove user posts
-
-
+    await PostModel.deleteMany({user:req.user.id})
     // remove profile
+    await  ProfileModel.findOneAndRemove({user:req.user.id})
+    // remove user
+    await UserModel.findOneAndRemove({_id:req.user.id})
+
+    res.json({msg:"user deleted"})
+  }catch(err){
+    console.log(err.message)
+    res.status(500).send("Server Error")
   }
 })
 module.exports = profileRouter;
