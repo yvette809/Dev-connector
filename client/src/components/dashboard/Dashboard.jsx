@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
-import { getCurrentProfile } from "../../actions/profile";
+import { getCurrentProfile ,createProfile} from "../../actions/profile";
 import DashboardActions from './DashboardActions';
 
 const Dashboard = ({
@@ -43,4 +43,4 @@ const mapStateToProps = (state) => ({
   profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getCurrentProfile })(Dashboard);
+export default connect(mapStateToProps, { createProfile,getCurrentProfile })(Dashboard);
