@@ -278,4 +278,12 @@ profileRouter.get("/github/:username", (req, res, next) => {
   }
 });
 
+profileRouter.delete("/", auth, async(req,res)=>{
+  try{
+    //remove user posts
+
+
+    // remove profile
+  }
+})
 module.exports = profileRouter;

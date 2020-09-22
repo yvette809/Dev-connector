@@ -9,8 +9,10 @@ import Dashboard from "./components/dashboard/Dashboard";
 import PrivateRoute from "./components/routing/privateRoute";
 import "./App.css";
 import { loadUser } from "./actions/auth";
-import CreateProfile from "./components/profile-forms/CreateProfile"
-import EditProfile from "./components/profile-forms/EditProfile"
+import CreateProfile from "./components/profile-forms/CreateProfile";
+import EditProfile from "./components/profile-forms/EditProfile";
+import AddExperience from "./components/profile-forms/AddExperience";
+import AddEducation from "./components/profile-forms/AddEducation";
 import configureStore from "./store";
 import setauthToken from "./utils/setAuthToken";
 
@@ -47,6 +49,12 @@ function App() {
           </PrivateRoute>
           <PrivateRoute path="/edit-profile" exact>
             <EditProfile />
+          </PrivateRoute>
+          <PrivateRoute path="/add-experience" exact>
+            <AddExperience />
+          </PrivateRoute>
+          <PrivateRoute path="/add-education" exact>
+            <AddEducation/>
           </PrivateRoute>
         </Switch>
       </section>
