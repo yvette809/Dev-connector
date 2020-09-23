@@ -23,7 +23,7 @@ export const getCurrentProfile = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      // payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
@@ -42,7 +42,7 @@ export const getProfiles = () => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      // payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
@@ -134,13 +134,13 @@ export const addExperience = (formData, history) => async (dispatch) => {
 
     history.push("./dashboard");
   } catch (err) {
-    const errors = err.response.data.errors;
+    const errors = err.response;
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
     dispatch({
       type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
+      // payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
