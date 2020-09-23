@@ -14,6 +14,8 @@ import EditProfile from "./components/profile-forms/EditProfile";
 import AddExperience from "./components/profile-forms/AddExperience";
 import AddEducation from "./components/profile-forms/AddEducation";
 import Profiles from "./components/profiles/Profiles";
+import Posts from "./components/posts/Posts";
+import Post from "./components/post/Post";
 import configureStore from "./store";
 import setauthToken from "./utils/setAuthToken";
 
@@ -59,6 +61,12 @@ function App() {
           </PrivateRoute>
           <PrivateRoute path="/add-education" exact>
             <AddEducation />
+          </PrivateRoute>
+          <PrivateRoute path="/posts" exact>
+            <Posts />
+          </PrivateRoute>
+          <PrivateRoute path="/posts/:id" exact>
+            <Post />
           </PrivateRoute>
         </Switch>
       </section>
