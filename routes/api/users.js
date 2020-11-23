@@ -78,5 +78,4 @@ userRouter.get("/me", basicAuth, async (req, res, next) => {
   }
 });
 
-
 module.exports = userRouter;
